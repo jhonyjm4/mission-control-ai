@@ -44,10 +44,33 @@ def run_cli(engine):
          console.print("Comandos: /help /status /about /clear /exit")
          continue
       if user_input == "/status":
-         show_response(engine.status_snapshot())
+         if user_input == "/status":
+            with console.status("[bold #06B6D4]Gerando Relatório de Diagnóstico com IA...[/]"):
+               try:
+                  # Em vez de apenas ler o snapshot, pedimos para a IA analisar o snapshot atual
+                  relatorio_ia = engine.gerar_relatorio_status()
+                  show_response(relatorio_ia)
+               except Exception as e:
+                  console.print(f"\n[red]⚠ Erro ao gerar relatório pela IA: {e}[/red]\n")
+         continue
+      if user_input == "/about":
+         print(f"Sistema operacional: Mission Control AI")
+         print(f"Trilha Ativa: {engine.trilha.upper()}")
+         print(f"Status do Motor: {'PRONTO' if engine.is_ready() else 'AGUARDANDO CONEXÃO'}")
          continue
       if user_input == "/clear":
          console.clear(); show_banner(); continue
+      else:
+         with console.status("[bold #06B6D4]Consultando gpt-oss:120b...[/]"):
+            try:
+               # Envia a pergunta do operador diretamente ao motor de análise
+               resposta_llm = engine.analyze(user_input)
+
+               # Exibe a resposta estruturada dentro do painel estilizado com timestamp
+               show_response(resposta_llm)
+            except Exception as e:
+               console.print(f"\n[red]⚠ Erro ao processar requisição na IA: {e}[/red]\n")
+
 # Qualquer outra entrada vai para o motor de análise
          resposta = engine.analyze(user_input)
          show_response(resposta)

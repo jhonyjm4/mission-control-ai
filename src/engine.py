@@ -2,7 +2,8 @@ import os
 from ollama import Client
 from dotenv import load_dotenv
 from pathlib import Path
-
+import src.telemetria as telemetria
+import src.alertas as alertas
 load_dotenv()
 
 # Identificação da trilha — ALTEREM conforme a escolha do grupo
@@ -13,7 +14,7 @@ client = Client(
    headers={'Authorization': 'Bearer ' + os.environ.get('OLLAMA_API_KEY', '')}
 )
 
-def llm(prompt, system=None, max_tokens=800, temperature=0.3):
+def llm(prompt, system=None, max_tokens=1000, temperature=0.3):
    """Envia prompt ao gpt-oss:120b via Ollama Cloud."""
    messages = []
    if system:
@@ -33,7 +34,7 @@ def load_system_prompt():
    path = Path("prompts/system_prompt.md")
    if path.exists():
       return path.read_text(encoding="utf-8")
-   return "Você é um assistente." # fallback genérico
+   return "Você é um analista de dados de satélites ambientais."
 
 class MissionEngine:
    """Motor de análise — vocês completam os métodos abaixo."""
@@ -43,28 +44,67 @@ class MissionEngine:
       self.system_prompt = load_system_prompt()
 
    def is_ready(self):
-   # Troquem para True quando analyze() estiver implementado
-      return False
+      return True
 
    def status_snapshot(self):
-      """Retorna texto resumindo o estado atual da telemetria."""
-   # TODO: chamar telemetria.coletar() e formatar legivelmente
-      return "🛠️ status_snapshot() ainda não implementado."
+      """Prepara e formata o panorama de telemetria imediato para o comando /status."""
+      dados = telemetria.coletar()
+      lista_alertas = alertas.avaliar(dados)
+
+      snapshot = f"=== MONITORAMENTO DE PAYLOAD: {self.trilha.upper()} ===\n"
+      for parametro, valor in dados.items():
+         snapshot += f"• {parametro.replace('_', ' ').title()}: {valor}\n"
+
+      snapshot += f"\nAlertas Automáticos Detectados ({len(lista_alertas)}):\n"
+      if not lista_alertas:
+         snapshot += " ✓ Sistemas operando em conformidade com as metas ecológicas."
+      else:
+         for al in lista_alertas:
+            snapshot += f" [⚠️ {al['nivel']}] {al['mensagem']}\n"
+
+      return snapshot
 
    def analyze(self, pergunta_usuario):
-      """Analisa a pergunta com base na telemetria + alertas + IA."""
-   # TODO (foco do trabalho):
-   # 1. Coletar dados via src.telemetria.coletar()
-   # 2. Avaliar alertas via src.alertas.avaliar(dados)
-   # 3. Montar prompt com dados + alertas + pergunta
-   # 4. Chamar llm(prompt, system=self.system_prompt)
-   # 5. Retornar a resposta
-      return (
-         "🛠️ Implementação pendente.\n\n"
-         "Olá! A interface CLI está funcionando, mas a lógica\n"
-         "de análise ainda não foi conectada. O grupo precisa:\n\n"
-         " 1. Completar src/telemetria.py\n"
-         " 2. Completar src/alertas.py\n"
-         " 3. Escrever o system prompt em prompts/system_prompt.md\n"
-         " 4. Sobrescrever analyze() em src/engine.py"
-      )
+      """Combina os dados brutos de telemetria e regras de software no prompt da IA."""
+      dados = telemetria.coletar()
+      lista_alertas = alertas.avaliar(dados)
+
+      prompt_contextualizado = f"""
+      [DADOS DE TELEMETRIA EM TEMPO REAL]
+      Focos Térmicos Ativos: {dados['quantidade_de_focus_do_sensor_térmico']}
+      Status do Sensor Óptico RGB+NIR: {dados['status_do_sensor_óptico']}
+      Imagens Acumuladas no Buffer: {dados['buffer_de_imagens_retidas']}
+      Margem de Erro de Geolocalização: {dados['precisao_da_geolocalização_(em_metros)']} metros
+      Nível de Carga da Bateria: {dados['percentual_de_bateria_disponível']}%
+
+      [ALERTAS DO SCRIPT PYTHON]
+      {lista_alertas if lista_alertas else "Nenhuma inconformidade de hardware identificada."}
+
+      [REQUISIÇÃO DO OPERADOR]
+      "{pergunta_usuario}"
+
+      Com base nos dados estruturados acima e em suas diretrizes operacionais, elabore um diagnóstico conectando a telemetria ao impacto real em solo na Terra.
+      """
+      return llm(prompt_contextualizado, system=self.system_prompt)
+
+   def gerar_relatorio_status(self):
+      """
+      Coleta as métricas em tempo real e força o gpt-oss:120b a redigir
+      um relatório cognitivo focado nos erros encontrados e impactos terrestres.
+      """
+      dados = telemetria.coletar()
+      lista_alertas = alertas.avaliar(dados)
+
+      prompt_auditoria = f"""
+           SISTEMA DE AUDITORIA AUTOMÁTICA — ANÁLISE DE STATUS [{self.trilha.upper()}]
+
+           [DADOS DE TELEMETRIA EM TEMPO REAL]
+           Focos Térmicos Ativos: {dados['quantidade_de_focus_do_sensor_térmico']}
+           Status do Sensor Óptico RGB+NIR: {dados['status_do_sensor_óptico']}
+           Imagens Acumuladas no Buffer: {dados['buffer_de_imagens_retidas']}
+           Margem de Erro de Geolocalização: {dados['precisao_da_geolocalização_(em_metros)']} metros
+           Nível de Carga da Bateria: {dados['percentual_de_bateria_disponível']}%
+
+          
+           """
+      return llm(prompt_auditoria, system=self.system_prompt)

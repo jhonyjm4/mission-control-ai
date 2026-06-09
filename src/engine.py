@@ -105,6 +105,8 @@ class MissionEngine:
            Margem de Erro de Geolocalização: {dados['precisao_da_geolocalização_(em_metros)']} metros
            Nível de Carga da Bateria: {dados['percentual_de_bateria_disponível']}%
 
-          Em caso de perguntas expecífcas responda primeiro a pergunta com base nos dados e depois gere o relatório
+          Em caso de perguntas expecífcas responda primeiro a pergunta com base nos dados e depois gere o relatório.
+          
+          Crie um ALERTA para caso tenha algo fora do padrão.
            """
       return llm(prompt_auditoria, system=self.system_prompt)

@@ -54,8 +54,11 @@ def run_cli(engine):
          continue
       if user_input == "/about":
          print(f"Sistema operacional: Mission Control AI")
-         print(f"Trilha Ativa: {engine.trilha.upper()}")
-         print(f"Status do Motor: {'PRONTO' if engine.is_ready() else 'AGUARDANDO CONEXÃO'}")
+         print(f"\nTrilha Ativa: {engine.trilha.upper()}")
+         print(f"\nA missão do Mission Control AI, operada em conjunto com o satélite de observação terrestre EnviSat, tem como foco central a automação inteligente do monitoramento geoespacial e ambiental em tempo real através de Inteligência")
+         print(f"Artificial Generativa. Ao integrar um motor analítico avançado diretamente na interface do operador, a missão resolve o crítico problema do atraso na detecção manual de desmatamentos ilegais e queimadas na região Amazônica")
+         print(f"e no Cerrado. Através do processamento imediato de telemetrias complexas (como capacidade de buffer de imagem, anomalias em sensores ópticos e variações térmicas), o sistema traduz dados brutos em diagnósticos acionáveis e")
+         print(f"alertas de segurança instantâneos, permitindo que órgãos de fiscalização e o setor privado mitiguem desastres ecológicos e controlem focos de incêndio antes que tomem proporções catastróficas.")
          continue
       if user_input == "/clear":
          console.clear(); show_banner(); continue

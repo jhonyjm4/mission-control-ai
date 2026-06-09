@@ -60,7 +60,7 @@ def run_cli(engine):
       if user_input == "/clear":
          console.clear(); show_banner(); continue
       else:
-         with console.status("[bold #06B6D4]Consultando gpt-oss:120b...[/]"):
+         with console.status("[bold #06B6D4]Consultando IA...[/]"):
             try:
                # Envia a pergunta do operador diretamente ao motor de análise
                resposta_llm = engine.analyze(user_input)
@@ -70,6 +70,4 @@ def run_cli(engine):
             except Exception as e:
                console.print(f"\n[red]⚠ Erro ao processar requisição na IA: {e}[/red]\n")
 
-# Qualquer outra entrada vai para o motor de análise
-         resposta = engine.analyze(user_input)
-         show_response(resposta)
+

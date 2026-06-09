@@ -12,19 +12,19 @@ session = PromptSession(style=Style.from_dict({"prompt": "#06B6D4 bold"}))
 def show_banner():
    """Exibe banner ASCII colorido no início."""
    banner = pyfiglet.figlet_format("Mission Control", font="ansi_shadow")
-   console.print(Text(banner, style="bold #06B6D4"))
+   console.print(Text(banner, style="bold #C9126E"))
    console.print(Panel.fit(
 "Sistema de monitoramento e análise por IA generativa.\n"
           "Use /help para ver os comandos · /exit para sair.\n"
           "Modelo: gpt-oss:120b via Ollama Cloud",
-          title="◆ MISSION CONTROL", border_style="#06B6D4"
+          title="◆ MISSION CONTROL", border_style="#C9126E"
 ))
 
 def show_response(text):
    """Renderiza resposta da IA em painel com timestamp."""
    now = datetime.now().strftime("%H:%M")
    console.print(Panel(text, title="◆ Mission Control",
-                       subtitle=now, border_style="#06B6D4"))
+                       subtitle=now, border_style="#C9126E"))
 def run_cli(engine):
    """Loop principal da CLI."""
    show_banner()
@@ -44,14 +44,13 @@ def run_cli(engine):
          console.print("Comandos: /help /status /about /clear /exit")
          continue
       if user_input == "/status":
-         if user_input == "/status":
-            with console.status("[bold #06B6D4]Gerando Relatório de Diagnóstico com IA...[/]"):
-               try:
-                  # Em vez de apenas ler o snapshot, pedimos para a IA analisar o snapshot atual
-                  relatorio_ia = engine.gerar_relatorio_status()
-                  show_response(relatorio_ia)
-               except Exception as e:
-                  console.print(f"\n[red]⚠ Erro ao gerar relatório pela IA: {e}[/red]\n")
+         with console.status("[bold #06B6D4]Gerando Relatório de Diagnóstico com IA...[/]"):
+            try:
+               # Em vez de apenas ler o snapshot, pedimos para a IA analisar o snapshot atual que ela gerou.
+               relatorio_ia = engine.gerar_relatorio_status()
+               show_response(relatorio_ia)
+            except Exception as e:
+               console.print(f"\n[red]⚠ Erro ao gerar relatório pela IA: {e}[/red]\n")
          continue
       if user_input == "/about":
          print(f"Sistema operacional: Mission Control AI")

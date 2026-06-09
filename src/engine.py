@@ -14,7 +14,7 @@ client = Client(
    headers={'Authorization': 'Bearer ' + os.environ.get('OLLAMA_API_KEY', '')}
 )
 
-def llm(prompt, system=None, max_tokens=1000, temperature=0.3):
+def llm(prompt, system=None, max_tokens=2000, temperature=0.3):
    """Envia prompt ao gpt-oss:120b via Ollama Cloud."""
    messages = []
    if system:
@@ -105,6 +105,6 @@ class MissionEngine:
            Margem de Erro de Geolocalização: {dados['precisao_da_geolocalização_(em_metros)']} metros
            Nível de Carga da Bateria: {dados['percentual_de_bateria_disponível']}%
 
-          
+          Em caso de perguntas expecífcas responda primeiro a pergunta com base nos dados e depois gere o relatório
            """
       return llm(prompt_auditoria, system=self.system_prompt)

@@ -18,7 +18,8 @@ O projeto utiliza bibliotecas modernas de estilização de terminal (`rich`, `pr
 
 Assista à apresentação do projeto, explicação da arquitetura do código e demonstração prática do funcionamento do motor de IA no terminal através do link abaixo:
 
-👉 **[Link do Vídeo no YouTube (Substituir pelo link real)](https://www.youtube.com/watch?v=EXEMPLO_GENERICO)**
+👉 **[Link do Vídeo no YouTube (
+GS Mission Control IA - Prompt and Artificial Intelligence)](https://youtu.be/2lSSucg3u-o?si=_RDte6OHlfUqS4Hr)**
 
 ---
 
@@ -27,14 +28,13 @@ Assista à apresentação do projeto, explicação da arquitetura do código e d
 O terminal inteligente renderiza o banner em arte ASCII e processa telemetrias estruturadas em tempo real com o suporte do modelo analítico.
 
 ### Tela Inicial e Inicialização do Prompt
-O sistema saúda o operador e disponibiliza o prompt customizado de alta visibilidade pronto para receber ordens ou comandos operacionais.
-![Tela Inicial do Mission Control](![screeshot_mission_control_ai1.jpeg](../screeshot_mission_control_ai1.jpeg))
+O sistema inicializa exibindo o banner estilizado via ASCII e o painel de metadados do modelo analítico, disponibilizando o prompt `❯` para o operador.
+![Tela Inicial do Mission Control](assets/screeshot_mission_control_ai1.jpeg)
 
-### Execução do Comando /status (Diagnóstico de Telemetria por IA)
-Ao acionar o comando `/status`, a IA analisa as métricas operacionais do satélite (ex: focos térmicos, sensores ópticos, capacidade de buffer, erros de geolocalização e bateria), identificando desvios críticos automaticamente.
-![Relatório de Status Gerado pela IA](![screeshot_mission_control_ai2.jpeg](../screeshot_mission_control_ai2.jpeg))
 
----
+### Execução do Comando /status (Análise de Telemetria e Alertas Críticos)
+[cite_start]Ao acionar o comando `/status`, a IA avalia o resumo da telemetria (imagens no buffer, precisão de geolocalização, bateria) e emite os alertas críticos e impactos imediatos em terra[cite: 55].
+![Relatório de Status Gerado pela IA](assets/screeshot_mission_control_ai2.jpeg)
 
 ## 🧠 Treinamento, Refinamento e Comportamento da LLM
 
